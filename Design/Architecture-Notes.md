@@ -16,18 +16,44 @@ A **shared wiki/Notion-like tool** with:
 - Content tagging by rule system
 - Map/image attachments
 - Character/location databases
+- **Importing `.docx` files** for easy migration of campaign notes
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology | Purpose |
-|-------|------------|---------|
-| Backend | Django + Django REST Framework | Auth, ORM, permissions, API |
-| Frontend | Vite + React | Fast dev server, modern tooling |
-| Auth | djangorestframework-simplejwt | JWT token authentication |
-| Editor | Tiptap or Quill | Rich text editing for wiki pages |
-| Styling | Tailwind CSS or Material-UI | UI components |
+| Layer     | Technology                        | Purpose                                      |
+|-----------|-----------------------------------|----------------------------------------------|
+| Backend   | Django + Django REST Framework    | Auth, ORM, permissions, API                  |
+| Frontend  | Vite + React                      | Fast dev server, modern tooling              |
+| Auth      | djangorestframework-simplejwt     | JWT token authentication                     |
+| Editor    | Tiptap                            | Rich text editing for wiki pages             |
+| Styling   | Material-UI                       | UI components                                |
+| Import    | python-docx                       | Parse and import `.docx` files               |
+
+---
+
+## Rich Text Editor: Tiptap
+
+- Built on top of ProseMirror, highly extensible and customizable.
+- Supports collaborative editing, tables, images, markdown, and custom extensions.
+- Stores content as JSON, which can be converted to HTML/Markdown.
+- **Importing `.docx` files:** Tiptap does not natively support `.docx` import. Instead, the backend parses `.docx` files (using `python-docx`), converts the content to Tiptap's JSON structure, and sends it to the frontend for display and editing.
+
+---
+
+## Importing `.docx` Files
+
+- **Backend:** Uses `python-docx` to parse uploaded `.docx` files.
+- **Conversion:** Extracts text, headings, lists, and basic formatting. Maps Word styles to Tiptap nodes/marks.
+- **Frontend:** Receives Tiptap-compatible JSON and loads it into the editor.
+- **Limitations:** Images and tables require additional handling. `.doc` files are not directly supported; recommend converting to `.docx` first.
+
+**Example Backend Flow:**
+1. User uploads a `.docx` file via the frontend.
+2. Django backend parses the file with `python-docx`.
+3. Content is converted to Tiptap JSON format.
+4. JSON is returned to the frontend and loaded into the Tiptap editor.
 
 ---
 
@@ -79,7 +105,7 @@ class Page(models.Model):
     """Wiki-style content pages"""
     world = models.ForeignKey(World, on_delete=models.CASCADE)
     title = models.CharField(max_length=300)
-    content = models.TextField()  # HTML or Markdown
+    content = models.TextField()  # HTML or Markdown or Tiptap JSON
     category = models.CharField(max_length=50)  # "NPC", "Location", "Lore", etc.
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -131,6 +157,7 @@ class IsUniverseMember(permissions.BasePermission):
 | `POST` | `/api/worlds/{id}/pages/` | Create new page |
 | `PATCH` | `/api/pages/{id}/` | Edit page |
 | `DELETE` | `/api/pages/{id}/` | Delete page |
+| `POST` | `/api/worlds/{id}/import-docx/` | Import `.docx` file as a new page |
 
 ---
 
@@ -202,6 +229,7 @@ export default defineConfig({
 - [ ] Build permission middleware
 - [ ] Create API endpoints
 - [ ] Build frontend components
+- [ ] **Implement `.docx` import:** Add backend endpoint using `python-docx` and frontend integration with Tiptap
 
 ---
 
