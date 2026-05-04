@@ -1,17 +1,17 @@
 # TTRPG Wiki Service - Architecture Notes
-
-> A collaborative wiki tool for multi-GM tabletop RPG campaigns with shared worldbuilding.
+> A collabortive tool for storing TTRPG campaigns with shared worldbuilding.
 
 ---
 
 ## Project Overview
 
 ### The Problem
-A multi-GM D&D game where different players run different worlds with different rulesets. When transitioning between worlds, GM responsibilities and rule systems change. Need a shared repository for notes, maps, and character bios that all GMs can access.
+A multi-GM D&D game where different players run different worlds with different rulesets. This allows for collaborative story telling in a different copacity. The players all have a story to tell in their world using their rule systems. When transitioning to a new world, the characters are adapted to the new rulesets, and the GM responsibilities are transfered to the player who created the world. 
 
 ### The Solution
 A **shared wiki/Notion-like tool** with:
 - Multi-user editing
+  - Uses similar system as google doc's for multiple users editing the same document. 
 - World categorization
 - Content tagging by rule system
 - Map/image attachments
