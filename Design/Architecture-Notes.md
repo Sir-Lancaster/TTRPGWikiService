@@ -3,6 +3,8 @@
 
 ---
 
+**MoSCoW**
+
 ## Project Overview
 
 ### The Problem
@@ -10,13 +12,13 @@ A multi-GM D&D game where different players run different worlds with different 
 
 ### The Solution
 A **shared wiki/Notion-like tool** with:
-- Multi-user editing
+- Multi-user editing **W**
   - Uses similar system as google doc's for multiple users editing the same document. 
-- World categorization
-- Content tagging by rule system
-- Map/image attachments
-- Character/location databases
-- **Importing `.docx` files** for easy migration of campaign notes
+- World categorization **M**
+- Content tagging by rule system **C**
+- Map/image attachments **M**
+- Character/location databases **W**
+- **Importing `.docx` files** for easy migration of campaign notes **S**
 
 ---
 
@@ -232,6 +234,7 @@ export default defineConfig({
 - [ ] **Implement `.docx` import:** Add backend endpoint using `python-docx` and frontend integration with Tiptap
 
 ---
+
 
 ## Key Design Decisions
 
